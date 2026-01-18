@@ -3,6 +3,7 @@ import { CanActivate, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ProfileGuard implements CanActivate {
       return of(true);
     }
 
-    return this.http.get<any>(`http://localhost:3000/api/user-info/${userId}`).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/user-info/${userId}`).pipe(
       map(userInfo => {
         if (
           userInfo &&

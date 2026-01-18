@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-lichsukiemke',
@@ -11,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./lichsukiemke.component.css']
 })
 export class LichsukiemkeComponent implements OnInit {
-  private readonly BASE_URL = 'http://localhost:3000/api';
+  private readonly BASE_URL = '${environment.apiUrl}';
 
   danhSachDot: any[] = [];
   moChiTiet: { [dotId: number]: boolean } = {};

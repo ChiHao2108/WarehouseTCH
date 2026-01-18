@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PhieuMuaService } from '../../services/phieu-mua.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-muahang',
@@ -55,7 +57,7 @@ export class MuahangComponent {
       this.formData.products = data;
     });
 
-    this.http.get<any>(`http://localhost:3000/api/user-info/${this.userId}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/user-info/${this.userId}`).subscribe({
       next: (res) => this.userInfo = res || {},
       error: () => alert('❌ Không thể lấy thông tin người dùng.')
     });
@@ -241,7 +243,7 @@ export class MuahangComponent {
     form.append('products', JSON.stringify(this.formData.products));
 
     // --- Gửi API ---
-    this.http.post<any>('http://localhost:3000/api/phieu-xuat', form).subscribe({
+    this.http.post<any>('${environment.apiUrl}/phieu-xuat', form).subscribe({
       next: (res) => {
         this.generatedReceiptCode = res.receipt_code;
         alert(`✅ Gửi phiếu xuất thành công!\n📄 Mã phiếu: ${res.receipt_code}`);

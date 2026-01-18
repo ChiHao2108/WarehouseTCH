@@ -6,6 +6,7 @@ import html2pdf from 'html2pdf.js';
 import JsBarcode from 'jsbarcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-invoice-manager',
@@ -35,7 +36,7 @@ export class InvoiceManagerComponent implements OnInit {
   ngOnInit(): void {
     const userId = sessionStorage.getItem('id');
     if (userId) {
-      this.http.get<any[]>(`http://localhost:3000/api/hoa-don`).subscribe({
+      this.http.get<any[]>(`${environment.apiUrl}/hoa-don`).subscribe({
         next: (data) => {
           this.hoaDonList = data.map(hd => ({
             ...hd,
@@ -157,7 +158,7 @@ export class InvoiceManagerComponent implements OnInit {
       };
 
       html2pdf().set(opt).from(element).save().then(() => {
-        this.http.put(`http://localhost:3000/api/${apiPath}`, {}).subscribe(() => {
+        this.http.put(`${environment.apiUrl}/${apiPath}`, {}).subscribe(() => {
           hd.daXuatHoaDon = true;
         });
       });
@@ -228,7 +229,7 @@ xuatHoaDonNhapThongMinh(hd: any) {
       pdf.addImage(imgData, 'JPEG', offsetX, offsetY, finalWidth, finalHeight);
       pdf.save(`${hd.receipt_code}.pdf`);
 
-      this.http.put(`http://localhost:3000/api/phieu-nhap/${hd.id}/xuat-hoa-don`, {})
+      this.http.put(`${environment.apiUrl}/phieu-nhap/${hd.id}/xuat-hoa-don`, {})
         .subscribe(() => {
           hd.daXuatHoaDon = true;
         });
@@ -300,7 +301,7 @@ xuatHoaDonXuatThongMinh(hd: any) {
       pdf.addImage(imgData, 'JPEG', offsetX, offsetY, finalWidth, finalHeight);
       pdf.save(`${hd.receipt_code}_xuat.pdf`);
 
-      this.http.put(`http://localhost:3000/api/phieu-xuat/${hd.id}/xuat-hoa-don`, {})
+      this.http.put(`${environment.apiUrl}/phieu-xuat/${hd.id}/xuat-hoa-don`, {})
         .subscribe(() => {
           hd.daXuatHoaDon = true;
         });

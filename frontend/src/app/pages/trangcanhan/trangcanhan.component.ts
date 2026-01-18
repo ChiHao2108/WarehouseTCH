@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-trangcanhan',
@@ -29,7 +31,7 @@ export class TrangcanhanComponent implements OnInit{
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get(`http://localhost:3000/api/user-info/${this.userId}`).subscribe((data: any) => {
+    this.http.get(`${environment.apiUrl}/user-info/${this.userId}`).subscribe((data: any) => {
       this.userInfo = data;
 
       // Nếu đã có dữ liệu thì bind ngược về form để sửa
@@ -90,7 +92,7 @@ submitInfo() {
     form.append('avatar', this.selectedFile);
   }
 
-  this.http.post('http://localhost:3000/api/user-info', form).subscribe(() => {
+  this.http.post('${environment.apiUrl}/user-info', form).subscribe(() => {
     alert('✅ Cập nhật thông tin thành công!');
     window.location.reload();
     this.showForm = false;

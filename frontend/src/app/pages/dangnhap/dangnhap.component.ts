@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dangnhap',
@@ -33,7 +34,7 @@ export class DangnhapComponent {
 
   login() {
     this.http.post<{ token: string; role: string; name: string; email: string; id: number }>(
-      'http://localhost:3000/api/login',
+      '${environment.apiUrl}/login',
       this.loginData
     ).subscribe({
       next: (res) => {
@@ -86,7 +87,7 @@ export class DangnhapComponent {
 
   const payload = { name, email, password };
 
-  this.http.post('http://localhost:3000/api/register', payload).subscribe({
+  this.http.post('${environment.apiUrl}/register', payload).subscribe({
     next: () => {
       alert('✅ Đăng ký thành công! Vui lòng đăng nhập.');
       this.setTab('login');

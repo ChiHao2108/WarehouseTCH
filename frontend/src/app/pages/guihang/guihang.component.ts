@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { GuihangService } from '../../services/phieu-nhap.service'; // Đường dẫn đúng
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-guihang',
@@ -52,7 +54,7 @@ export class GuihangComponent {
       this.addProduct();
     }
 
-    this.http.get<any>(`http://localhost:3000/api/user-info/${this.userId}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/user-info/${this.userId}`).subscribe({
       next: (res) => this.userInfo = res || {},
       error: () => alert('Không thể lấy thông tin người dùng.')
     });
@@ -201,7 +203,7 @@ export class GuihangComponent {
     });
     form.append('products', JSON.stringify(this.formData.products));
 
-    this.http.post('http://localhost:3000/api/phieu-nhap', form).subscribe({
+    this.http.post('${environment.apiUrl}/phieu-nhap', form).subscribe({
       next: (res: any) => {
         this.generatedReceiptCode = res.receipt_code;
         alert(`✅ Gửi phiếu chuyển hàng thành công!\n📄 Mã phiếu: ${res.receipt_code}`);
@@ -249,7 +251,7 @@ export class GuihangComponent {
       return;
     }
 
-    this.http.get<any>(`http://localhost:3000/api/products-detail/by-code/${code}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/products-detail/by-code/${code}`).subscribe({
       next: (product) => {
         if (!product || !product.product_code) {
           alert("❌ Không tìm thấy sản phẩm có mã: " + code);

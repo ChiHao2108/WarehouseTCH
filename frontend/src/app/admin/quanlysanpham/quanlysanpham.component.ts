@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-quanlysanpham',
@@ -80,7 +81,7 @@ export class QuanlysanphamComponent implements OnInit {
     if (this.selectedKhuVuc) {
       params.khu_vuc_id = this.selectedKhuVuc;
     }
-    this.http.get<string[]>('http://localhost:3000/api/products-detail/types', { params }).subscribe({
+    this.http.get<string[]>('${environment.apiUrl}/products-detail/types', { params }).subscribe({
       next: (data) => {
         this.loaiHang = data;
         this.selectedType = '';
@@ -102,21 +103,21 @@ export class QuanlysanphamComponent implements OnInit {
     if (this.minPrice !== null) params.minPrice = this.minPrice;
     if (this.maxPrice !== null) params.maxPrice = this.maxPrice;
 
-    this.http.get<any[]>('http://localhost:3000/api/products-detail/filter', { params }).subscribe(
+    this.http.get<any[]>('${environment.apiUrl}/products-detail/filter', { params }).subscribe(
       (data) => this.danhSachSanPham = data,
       (err) => console.error('❌ Lỗi lọc sản phẩm:', err)
     );
   }
 
   layKhuVuc() {
-    this.http.get<any[]>('http://localhost:3000/api/khu-vuc').subscribe(
+    this.http.get<any[]>('${environment.apiUrl}/khu-vuc').subscribe(
       (data) => this.danhSachKhuVuc = data,
       (err) => console.error('❌ Lỗi khi lấy khu vực:', err)
     );
   }
 
   layLoaiHangTuDB() {
-    this.http.get<string[]>('http://localhost:3000/api/products-detail/types').subscribe({
+    this.http.get<string[]>('${environment.apiUrl}/products-detail/types').subscribe({
       next: (data) => this.loaiHang = data,
       error: (err) => console.error('❌ Lỗi lấy loại hàng:', err)
     });
@@ -144,7 +145,7 @@ export class QuanlysanphamComponent implements OnInit {
       return;
     }
 
-    this.http.delete(`http://localhost:3000/api/products-detail/xoa-theo-ma/${product_code}`).subscribe({
+    this.http.delete(`${environment.apiUrl}/products-detail/xoa-theo-ma/${product_code}`).subscribe({
       next: () => {
         alert('✅ Đã xoá toàn bộ sản phẩm thành công!');
         this.layDanhSachSanPham();
@@ -199,7 +200,7 @@ export class QuanlysanphamComponent implements OnInit {
     });
     if (this.fileAnh) formData.append('image', this.fileAnh);
     if (this.fileLogo) formData.append('logo', this.fileLogo);
-    this.http.post('http://localhost:3000/api/products-detail', formData).subscribe({
+    this.http.post('${environment.apiUrl}/products-detail', formData).subscribe({
       next: () => {
         alert('✅ Nhập thành công!');
         this.hienPopupThem = false;
@@ -230,7 +231,7 @@ export class QuanlysanphamComponent implements OnInit {
     this.previewLogo = sp.logo_url;
     this.hienPopupCapNhat = true;
 
-    this.http.get<any[]>(`http://localhost:3000/api/products-detail/all-by-code/${sp.product_code}`)
+    this.http.get<any[]>(`${environment.apiUrl}/products-detail/all-by-code/${sp.product_code}`)
       .subscribe({
         next: (data) => {
           // 🆕 Sửa đổi quan trọng: lưu lại số lượng ban đầu của từng dòng
@@ -297,7 +298,7 @@ export class QuanlysanphamComponent implements OnInit {
       formData.append('logo_url', this.fileLogo);
     }
 
-    this.http.put(`http://localhost:3000/api/products-detail/${sp.id}`, formData)
+    this.http.put(`${environment.apiUrl}/products-detail/${sp.id}`, formData)
       .subscribe({
         next: () => {
           this.layDanhSachSanPham();
@@ -321,7 +322,7 @@ export class QuanlysanphamComponent implements OnInit {
     }
 
     // Gửi yêu cầu cập nhật số lượng đến API backend
-    this.http.put(`http://localhost:3000/api/products-detail/update-quantity/${id}`, { quantity: newQuantity }).subscribe({
+    this.http.put(`${environment.apiUrl}/products-detail/update-quantity/${id}`, { quantity: newQuantity }).subscribe({
       next: (response: any) => {
         // Cập nhật lại dữ liệu hiển thị trên giao diện
         // Dữ liệu tổng đã được backend tính toán và trả về, nên bạn có thể cập nhật
@@ -347,7 +348,7 @@ export class QuanlysanphamComponent implements OnInit {
   }
 
   updateQuantity(id: number, quantity: number, onSuccess?: () => void) {
-    this.http.put(`http://localhost:3000/api/products-detail/update-quantity/${id}`, { quantity })
+    this.http.put(`${environment.apiUrl}/products-detail/update-quantity/${id}`, { quantity })
       .subscribe({
         next: () => {
           alert('✅ Đã cập nhật số lượng!');
@@ -394,7 +395,7 @@ moPopupChonLocation() {
   });
 
   // Gọi API với excludeProductCode
-  this.http.get(`http://localhost:3000/api/kho/area/${this.sanPhamCapNhat.khu_vuc_id}?excludeProductCode=${this.sanPhamCapNhat.product_code}`)
+  this.http.get(`${environment.apiUrl}/kho/area/${this.sanPhamCapNhat.khu_vuc_id}?excludeProductCode=${this.sanPhamCapNhat.product_code}`)
   .subscribe((data: any) => {
     const danhSach = data.map((loc: any) => ({
       ...loc,
@@ -472,7 +473,7 @@ xacNhanCapNhatWeight() {
     }))
   };
 
-  this.http.put(`http://localhost:3000/api/products-detail/update-weight`, payload)
+  this.http.put(`${environment.apiUrl}/products-detail/update-weight`, payload)
     .subscribe(res => {
       alert("Cập nhật thành công!");
       this.hienPopupChonLocation = false;

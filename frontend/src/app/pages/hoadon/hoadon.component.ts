@@ -6,6 +6,8 @@ import html2pdf from 'html2pdf.js';
 import JsBarcode from 'jsbarcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-hoadon',
@@ -45,7 +47,7 @@ export class HoadonComponent implements OnInit {
 ngOnInit(): void {
   const userId = sessionStorage.getItem('id');
   if (userId) {
-    this.http.get<any[]>(`http://localhost:3000/api/hoa-don/${userId}`).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/hoa-don/${userId}`).subscribe({
       next: (data) => {
         this.hoaDonList = data.map(hd => ({
           ...hd,
@@ -183,7 +185,7 @@ capNhatPhieuNhap(hd: any) {
       return;
     }
 
-    this.http.put(`http://localhost:3000/api/phieu-nhap/${phieu.id}`, {
+    this.http.put(`${environment.apiUrl}/phieu-nhap/${phieu.id}`, {
       supplier_name: phieu.supplier_name,
       supplier_address: phieu.supplier_address,
       meeting_date: phieu.meeting_date,
@@ -212,7 +214,7 @@ capNhatPhieuNhap(hd: any) {
       const formData = new FormData();
       formData.append('image', file); // phải khớp với multer single('image')
 
-      this.http.post<any>('http://localhost:3000/api/upload', formData).subscribe({
+      this.http.post<any>('${environment.apiUrl}/upload', formData).subscribe({
         next: (res) => {
           this.previewLogo = res.imageUrl; // ← Dùng để hiển thị
           this.phieuDangCapNhat.logo_url = res.imageUrl; // ← Gán URL ảnh trả về
@@ -332,7 +334,7 @@ xuatHoaDonNhap(hd: any) {
 
     html2pdf().set(opt).from(element).save().then(() => {
       // ✅ Sau khi xuất xong thì gọi API cập nhật trạng thái
-      this.http.put(`http://localhost:3000/api/phieu-nhap/${hd.id}/xuat-hoa-don`, {})
+      this.http.put(`${environment.apiUrl}/phieu-nhap/${hd.id}/xuat-hoa-don`, {})
         .subscribe(() => {
         hd.daXuatHoaDon = true;
       });
@@ -372,7 +374,7 @@ xuatHoaDonXuat(hd: any) {
 
     html2pdf().set(opt).from(element).save().then(() => {
       // ✅ Gọi API cập nhật trạng thái "đã xuất hóa đơn xuất"
-      this.http.put(`http://localhost:3000/api/phieu-xuat/${hd.id}/xuat-hoa-don`, {})
+      this.http.put(`${environment.apiUrl}/phieu-xuat/${hd.id}/xuat-hoa-don`, {})
         .subscribe(() => {
           hd.daXuatHoaDon = true;
         });
@@ -461,7 +463,7 @@ xuatHoaDonNhapThongMinh(hd: any) {
       pdf.addImage(imgData, 'JPEG', offsetX, offsetY, finalWidth, finalHeight);
       pdf.save(`${hd.receipt_code}.pdf`);
 
-      this.http.put(`http://localhost:3000/api/phieu-nhap/${hd.id}/xuat-hoa-don`, {})
+      this.http.put(`${environment.apiUrl}/phieu-nhap/${hd.id}/xuat-hoa-don`, {})
         .subscribe(() => {
           hd.daXuatHoaDon = true;
         });
@@ -533,7 +535,7 @@ xuatHoaDonXuatThongMinh(hd: any) {
       pdf.addImage(imgData, 'JPEG', offsetX, offsetY, finalWidth, finalHeight);
       pdf.save(`${hd.receipt_code}_xuat.pdf`);
 
-      this.http.put(`http://localhost:3000/api/phieu-xuat/${hd.id}/xuat-hoa-don`, {})
+      this.http.put(`${environment.apiUrl}/phieu-xuat/${hd.id}/xuat-hoa-don`, {})
         .subscribe(() => {
           hd.daXuatHoaDon = true;
         });

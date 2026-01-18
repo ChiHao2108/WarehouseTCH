@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 interface ProductDetail {
   product_code: string;
@@ -64,7 +65,7 @@ export class LocationManagerComponent implements OnInit {
   }
 
   fetchOverviewAndAreas() {
-    this.http.get<any>('http://localhost:3000/api/kho/overview').subscribe({
+    this.http.get<any>('${environment.apiUrl}/kho/overview').subscribe({
       next: res => {
         // Gán thống kê kho
         this.totalWeight = res.overview.tong_suc_chua_kg;
@@ -88,7 +89,7 @@ export class LocationManagerComponent implements OnInit {
   const email = sessionStorage.getItem('email');
   if (!email) return;
 
-  this.http.get<any[]>(`http://localhost:3000/api/kho/transfer-log?email=${email}`).subscribe({
+  this.http.get<any[]>(`${environment.apiUrl}/kho/transfer-log?email=${email}`).subscribe({
     next: (res) => {
       this.transferLogs = res;
     },
@@ -104,7 +105,7 @@ export class LocationManagerComponent implements OnInit {
     this.selectedAreaIndex = index;
     const khuVucId = this.areas[index]?.khu_vuc_id;
 
-    this.http.get<any[]>(`http://localhost:3000/api/kho/area/${khuVucId}`).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/kho/area/${khuVucId}`).subscribe({
       next: data => {
         this.pallets = data;
         this.generatePalletGrid();
@@ -158,7 +159,7 @@ onPalletClick(pallet: any) {
   // Nếu không đang chuyển thì load sản phẩm như cũ
   if (pallet.weightUsed === 0) return;
 
-  this.http.get<any>(`http://localhost:3000/api/kho/pallet/${pallet.name}`).subscribe({
+  this.http.get<any>(`${environment.apiUrl}/kho/pallet/${pallet.name}`).subscribe({
     next: (res) => {
       this.selectedProducts = res.products.map((p: any) => ({
         ...p.product,
@@ -210,7 +211,7 @@ xacNhanChuyen() {
   const toPallet = this.selectedDestinationPallet.name;
 
   // Gửi yêu cầu chuyển hàng
-  this.http.post('http://localhost:3000/api/kho/chuyen-pallet', {
+  this.http.post('${environment.apiUrl}/kho/chuyen-pallet', {
     products: productsToMove,
     from: fromPallet,
     to: toPallet,

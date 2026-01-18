@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FilterProductCodePipe } from './filter-product-code.pipe'; // Đường dẫn đúng nhé
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -64,7 +65,7 @@ export class DuyetphieunhapComponent implements OnInit {
   }
 
   loadPhieu() {
-    this.http.get<any[]>('http://localhost:3000/api/phieu-nhap').subscribe(data => {
+    this.http.get<any[]>('${environment.apiUrl}/phieu-nhap').subscribe(data => {
       this.danhSachPhieuGoc = data;
       this.locPhieu(); // Gọi hàm lọc ngay sau khi load
     });
@@ -96,7 +97,7 @@ export class DuyetphieunhapComponent implements OnInit {
       return;
     }
 
-    this.http.get<any>(`http://localhost:3000/api/products-detail/check-ma/${this.maCanKiemTra}`)
+    this.http.get<any>(`${environment.apiUrl}/products-detail/check-ma/${this.maCanKiemTra}`)
       .subscribe(res => {
         if (res.exists) {
           this.ketQuaSanPham = res.product;
@@ -139,7 +140,7 @@ export class DuyetphieunhapComponent implements OnInit {
   hoanTatKiemTra() {
     const newStatus = 'Đã duyệt';
 
-    this.http.put(`http://localhost:3000/api/phieu-nhap/${this.selectedPhieu.id}/admin-cap-nhat`, {
+    this.http.put(`${environment.apiUrl}/phieu-nhap/${this.selectedPhieu.id}/admin-cap-nhat`, {
       trang_thai: newStatus,
       note_admin: this.phanHoiHeThong,
       admin_account_email: this.adminEmail,
@@ -169,7 +170,7 @@ export class DuyetphieunhapComponent implements OnInit {
     this.popupNhapKhoMo = true;
 
     // Lấy danh sách sản phẩm của phiếu nhập
-    this.http.get<any[]>(`http://localhost:3000/api/phieu-nhap/${this.selectedPhieu.id}/san-pham`)
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-nhap/${this.selectedPhieu.id}/san-pham`)
       .subscribe(data => {
         this.danhSachSanPhamNhap = data.map(sp => ({
           ...sp,
@@ -184,7 +185,7 @@ export class DuyetphieunhapComponent implements OnInit {
       });
 
     // Lấy danh sách khu vực kho
-    this.http.get<any[]>('http://localhost:3000/api/khu-vuc')
+    this.http.get<any[]>('${environment.apiUrl}/khu-vuc')
       .subscribe(data => {
         this.danhSachKhuVuc = data;
       }, err => {
@@ -204,7 +205,7 @@ export class DuyetphieunhapComponent implements OnInit {
       return;
     }
 
-    this.http.get<any>(`http://localhost:3000/api/products-detail/check-ma/${sp.product_code}`)
+    this.http.get<any>(`${environment.apiUrl}/products-detail/check-ma/${sp.product_code}`)
       .subscribe(data => {
         sp.trung_ma = data.exists; // ✅ Gán chính xác
       }, error => {
@@ -218,7 +219,7 @@ export class DuyetphieunhapComponent implements OnInit {
 
     const maSanPham = this.danhSachSanPhamNhap.map(sp => sp.product_code);
 
-    this.http.post<any>('http://localhost:3000/api/products-detail/check-multiple', {
+    this.http.post<any>('${environment.apiUrl}/products-detail/check-multiple', {
       ma_san_pham: maSanPham
     }).subscribe(result => {
       const maTrung = [...new Set(result.duplicates as string[] || [])];
@@ -295,11 +296,11 @@ export class DuyetphieunhapComponent implements OnInit {
       }
 
       // 📨 Gửi API nhập kho
-      this.http.post('http://localhost:3000/api/nhap-kho', {
+      this.http.post('${environment.apiUrl}/nhap-kho', {
         phieu_id: this.selectedPhieu.id,
         danh_sach_san_pham: danhSachOK
       }).subscribe(() => {
-        this.http.put(`http://localhost:3000/api/phieu-nhap/${this.selectedPhieu.id}/hoan-tat`, {
+        this.http.put(`${environment.apiUrl}/phieu-nhap/${this.selectedPhieu.id}/hoan-tat`, {
           trang_thai: 'Đã nhập hàng vào kho'
         }).subscribe(() => {
           alert('📦 Nhập kho thành công!');
@@ -327,7 +328,7 @@ export class DuyetphieunhapComponent implements OnInit {
       const formData = new FormData();
       formData.append('image', file);
 
-      this.http.post<any>('http://localhost:3000/api/upload', formData).subscribe(res => {
+      this.http.post<any>('${environment.apiUrl}/upload', formData).subscribe(res => {
         sp.image_url = res.imageUrl; // Lưu đường dẫn ảnh mới
       });
     }
@@ -349,7 +350,7 @@ export class DuyetphieunhapComponent implements OnInit {
   }
 
   layPalletTheoKhu(khuVucId: number) {
-    this.http.get<any[]>(`http://localhost:3000/api/kho/area/${khuVucId}`).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/kho/area/${khuVucId}`).subscribe({
       next: data => {
         // Reset trước
         this.danhSachPallet = data;
@@ -495,7 +496,7 @@ export class DuyetphieunhapComponent implements OnInit {
       const confirmHuy = confirm('Bạn có chắc chắn muốn hủy phiếu này không?');
       if (!confirmHuy) return;
 
-      this.http.put(`http://localhost:3000/api/phieu-nhap-kho/${p.id}/huy`, { trang_thai: 'Đã hủy' })
+      this.http.put(`${environment.apiUrl}/phieu-nhap-kho/${p.id}/huy`, { trang_thai: 'Đã hủy' })
         .subscribe({
           next: () => p.trang_thai = 'Đã hủy',
           error: () => alert('Hủy phiếu thất bại, vui lòng thử lại')

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http'; // ✅ import HttpClient
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-staff-layout',
@@ -22,7 +23,7 @@ export class StaffLayoutComponent implements OnInit {
     this.isLoggedIn = !!sessionStorage.getItem('token');
 
     if (userId) {
-      this.http.get<any>(`http://localhost:3000/api/users/${userId}`).subscribe({
+      this.http.get<any>(`${environment.apiUrl}/users/${userId}`).subscribe({
         next: (data) => {
           // Ưu tiên tên trong DB, fallback session
           this.userName = data.name?.trim() || nameFromStorage || 'Nhân viên';

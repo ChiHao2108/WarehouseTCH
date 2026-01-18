@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin-layout',
@@ -30,7 +31,7 @@ export class AdminLayoutComponent implements OnInit {
     this.isLoggedIn = !!sessionStorage.getItem('token');
 
     if (userId) {
-      this.http.get<any>(`http://localhost:3000/api/users/${userId}`).subscribe({
+      this.http.get<any>(`${environment.apiUrl}/users/${userId}`).subscribe({
         next: (data) => {
           this.userName = data.name?.trim() || 'Admin';
           sessionStorage.setItem('name', this.userName);
@@ -48,13 +49,13 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   getSoPhieuNhapChoDuyet() {
-    this.http.get<any[]>('http://localhost:3000/api/phieu-nhap').subscribe(ds => {
+    this.http.get<any[]>('${environment.apiUrl}/phieu-nhap').subscribe(ds => {
       this.soPhieuNhapChoDuyet = ds.filter(p => p.trang_thai === 'Đã gửi phiếu').length;
     });
   }
 
   getSoPhieuXuatChoDuyet() {
-    this.http.get<any[]>('http://localhost:3000/api/phieu-xuat').subscribe(ds => {
+    this.http.get<any[]>('${environment.apiUrl}/phieu-xuat').subscribe(ds => {
       this.soPhieuXuatChoDuyet = ds.filter(p => p.trang_thai === 'Đã gửi phiếu').length;
     });
   }

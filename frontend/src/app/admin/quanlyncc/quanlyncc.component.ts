@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-quanlyncc',
@@ -33,13 +35,13 @@ export class QuanlynccComponent {
   }
 
   loadKhuVuc() {
-    this.http.get<any>('http://localhost:3000/api/khu-vuc').subscribe(res => {
+    this.http.get<any>('${environment.apiUrl}/khu-vuc').subscribe(res => {
       this.danhSachKhuVuc = res;
     });
   }
 
   loadLogoMacDinh() {
-    this.http.get<any[]>('http://localhost:3000/api/suppliers/recent').subscribe(res => {
+    this.http.get<any[]>('${environment.apiUrl}/suppliers/recent').subscribe(res => {
       const uniqueSuppliers = this.getUniqueLatestSuppliers(res);
       this.logosGocTrongKhuVuc = [...uniqueSuppliers];
       this.logosTrongKhuVuc = [...uniqueSuppliers];
@@ -56,7 +58,7 @@ export class QuanlynccComponent {
       return;
     }
 
-    this.http.get<any[]>(`http://localhost:3000/api/suppliers/by-khu-vuc/${this.selectedAreaId}`).subscribe(res => {
+    this.http.get<any[]>(`${environment.apiUrl}/suppliers/by-khu-vuc/${this.selectedAreaId}`).subscribe(res => {
       const uniqueSuppliers = this.getUniqueLatestSuppliers(res);
       this.logosGocTrongKhuVuc = [...uniqueSuppliers];
       this.logosTrongKhuVuc = [...uniqueSuppliers];
@@ -100,8 +102,8 @@ export class QuanlynccComponent {
     const khuVucId = this.selectedAreaId;
 
     const apiURL = khuVucId
-      ? `http://localhost:3000/api/suppliers/by-product/${keyword}?khu_vuc_id=${khuVucId}`
-      : `http://localhost:3000/api/suppliers/by-product/${keyword}`;
+      ? `${environment.apiUrl}/suppliers/by-product/${keyword}?khu_vuc_id=${khuVucId}`
+      : `${environment.apiUrl}/suppliers/by-product/${keyword}`;
 
     this.http.get<any>(apiURL).subscribe(res => {
       this.loading = false;
@@ -114,8 +116,8 @@ export class QuanlynccComponent {
 
         if (!this.logosGocTrongKhuVuc.length) {
           const url = khuVucId
-            ? `http://localhost:3000/api/suppliers/by-khu-vuc/${khuVucId}`
-            : `http://localhost:3000/api/suppliers/recent`;
+            ? `${environment.apiUrl}/suppliers/by-khu-vuc/${khuVucId}`
+            : `${environment.apiUrl}/suppliers/recent`;
 
           this.http.get<any[]>(url).subscribe(list => {
             this.logosGocTrongKhuVuc = list;
@@ -143,7 +145,7 @@ export class QuanlynccComponent {
     this.lichSuNhap = [];
     this.logoIndex = 0;
 
-    this.http.get<any>(`http://localhost:3000/api/suppliers/detail-by-name/${encodeURIComponent(ncc.supplier_name)}`)
+    this.http.get<any>(`${environment.apiUrl}/suppliers/detail-by-name/${encodeURIComponent(ncc.supplier_name)}`)
       .subscribe(res => {
         if (res.exists) {
           this.nhaCungCapChiTiet = res;

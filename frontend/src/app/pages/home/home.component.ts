@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<any[]>('http://localhost:3000/api/products-detail/filter')
+    this.http.get<any[]>('${environment.apiUrl}/products-detail/filter')
       .subscribe({
         next: (data) => {
           this.sanPhamList = data;

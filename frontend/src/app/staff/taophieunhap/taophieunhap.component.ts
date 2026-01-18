@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-taophieunhap',
@@ -26,7 +27,7 @@ export class TaophieunhapComponent implements OnInit {
   }
 
   loadPhieu() {
-    this.http.get<any[]>('http://localhost:3000/api/phieu-nhap').subscribe(data => {
+    this.http.get<any[]>('${environment.apiUrl}/phieu-nhap').subscribe(data => {
       this.danhSachPhieu = data;
     });
   }
@@ -44,7 +45,7 @@ export class TaophieunhapComponent implements OnInit {
   hoanTatKiemTra() {
     const newStatus = 'Đã tạo phiếu - đợi duyệt';
 
-    this.http.put(`http://localhost:3000/api/phieu-nhap/${this.selectedPhieu.id}/staff-cap-nhat`, {
+    this.http.put(`${environment.apiUrl}/phieu-nhap/${this.selectedPhieu.id}/staff-cap-nhat`, {
       trang_thai: newStatus,
       note_staff: this.phanHoiStaff,
       staff_account_email: this.staffEmail,
