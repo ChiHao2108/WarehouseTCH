@@ -21,21 +21,12 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use('/uploads', express.static('uploads'));
 
 // Kết nối CSDL
-const db = mysql.createPool({
-  host: process.env.DB_HOST,          // *.tidbcloud.com
-  user: process.env.DB_USER,          // xxx.root
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: 4000,
-  ssl: {
-    rejectUnauthorized: true
-  },
-  waitForConnections: true,
-  connectionLimit: 10
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
-
-console.log('✅ DB pool created');
-module.exports = db;
 
 // Secret key JWT
 const JWT_SECRET = process.env.JWT_SECRET;
