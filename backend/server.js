@@ -33,6 +33,14 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'WarehouseTCH API is running 🚀',
+    status: 'OK'
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
