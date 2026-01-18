@@ -22,14 +22,20 @@ app.use('/uploads', express.static('uploads'));
 
 // Kết nối CSDL
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '48194007', // đổi nếu cần
-  database: 'warehouse_db'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
 // Secret key JWT
-const JWT_SECRET = 'your_jwt_secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // 📁 Cấu hình multer để lưu ảnh KHÔNG TRÙNG TÊN
 const storage = multer.diskStorage({
@@ -54,7 +60,6 @@ const axios = require('axios'); // Thêm axios
 const bodyParser = require('body-parser'); // Thêm body-parser
 
 // --- Cấu hình Gemini API ---
-const GEMINI_API_KEY = 'AIzaSyBABTQRJprUeL2ovkHmkPKCyCO1uJaHPGU'; // Thay thế bằng API Key của bạn
 // ĐÃ SỬA: Thay đổi mô hình từ 'gemini-pro' sang 'gemini-1.5-flash-latest'
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
