@@ -34,7 +34,7 @@ export class DangnhapComponent {
 
   login() {
     this.http.post<{ token: string; role: string; name: string; email: string; id: number }>(
-      '${environment.apiUrl}/login',
+      `${environment.apiUrl}/login`,
       this.loginData
     ).subscribe({
       next: (res) => {
@@ -87,7 +87,7 @@ export class DangnhapComponent {
 
   const payload = { name, email, password };
 
-  this.http.post('${environment.apiUrl}/register', payload).subscribe({
+  this.http.post(`${environment.apiUrl}/register`, payload).subscribe({
     next: () => {
       alert('✅ Đăng ký thành công! Vui lòng đăng nhập.');
       this.setTab('login');
