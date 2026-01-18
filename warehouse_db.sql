@@ -1,7 +1,5 @@
 CREATE DATABASE warehouse_db;
-USE warehouse_db;
-
-SHOW COLUMNS FROM phieu_xuat_kho;
+USE warehouse_db;;
 
 -- Phần bảng cho tài khoản , thông tin tài khoản
 CREATE TABLE users (
@@ -29,8 +27,6 @@ CREATE TABLE user_info (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-UPDATE users SET role = 'admin' WHERE id = 1;
-UPDATE users SET role = 'user' WHERE id = 2;
 
 /*Trigger tự động nhập tên fullname lên name*/
 DELIMITER //
@@ -60,8 +56,6 @@ DELIMITER ;
 select * from users;
 select * from user_info;
 
-DROP TABLE IF EXISTS user_info;
-DROP TABLE IF EXISTS users;
 
 -- Phần bảng cho phiếu nhập
 CREATE TABLE phieu_nhap_kho (
@@ -124,18 +118,9 @@ CREATE TABLE phieu_nhap_kho_chi_tiet (
   FOREIGN KEY (phieu_nhap_kho_id) REFERENCES phieu_nhap_kho(id) ON DELETE CASCADE
 );
 
-UPDATE phieu_nhap_kho
-SET trang_thai = 'Đã gửi phiếu'
-WHERE id = 9;
-
-DELETE FROM phieu_nhap_kho
-WHERE id IN (20);
-
 select * from phieu_nhap_kho ;
 select * from phieu_nhap_kho_chi_tiet;
 
-DROP TABLE IF EXISTS phieu_nhap_kho_chi_tiet;
-DROP TABLE IF EXISTS phieu_nhap_kho;
 
 -- Phần bảng phiếu xuất kho
 CREATE TABLE phieu_xuat_kho (
@@ -202,9 +187,7 @@ CREATE TABLE phieu_xuat_kho_chi_tiet (
 
 select * from phieu_xuat_kho ;
 select * from phieu_xuat_kho_chi_tiet;
-  
-DROP TABLE IF EXISTS phieu_xuat_kho_chi_tiet;
-DROP TABLE IF EXISTS phieu_xuat_kho;
+
 
 /*Bảng tổng quan kho , sức chứa*/
 CREATE TABLE tong_suc_chua (
@@ -371,7 +354,6 @@ END;
 
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS trg_set_location_before_insert;
 /*Trigger tự động tăng location khi thêm hàng vào khu vực*/
 DELIMITER //
 
@@ -403,7 +385,6 @@ END;
 DELIMITER ;
 
 select * from products_detail;
-DROP TABLE IF EXISTS products_detail;
 
 
 -- Tạo các view để xem 
@@ -498,8 +479,6 @@ CREATE TABLE log_tru_hang (
   phieu_xuat_id INT
 );
 
-drop table location_transfer_log;
-drop table log_tru_hang;
 
 -- Bảng lưu thông tin đợt kiểm kê
 CREATE TABLE kiem_ke_dot (
@@ -533,8 +512,6 @@ CREATE TABLE kiem_ke_chi_tiet (
 select * from kiem_ke_dot;
 select * from kiem_ke_chi_tiet;
 
-drop table kiem_ke_chi_tiet;
-drop table kiem_ke_dot;
 
 
 

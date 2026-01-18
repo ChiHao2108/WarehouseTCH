@@ -21,12 +21,26 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use('/uploads', express.static('uploads'));
 
 // Kết nối CSDL
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: 4000,               // TiDB Cloud luôn là 4000
+  ssl: {
+    rejectUnauthorized: true
+  }
 });
+
+db.connect(err => {
+  if (err) {
+    console.error('❌ MySQL connect failed:', err);
+  } else {
+    console.log('✅ Connected to TiDB Cloud MySQL');
+  }
+});
+
+module.exports = db;
 
 // Secret key JWT
 const JWT_SECRET = process.env.JWT_SECRET;
