@@ -321,12 +321,12 @@ xuatHoaDonNhap(hd: any) {
     const opt = {
       margin: 0.2,
       filename: `${hd.receipt_code}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: 'jpeg' as const, quality: 0.98 },
       html2canvas: { scale: 1.2, useCORS: true },
       jsPDF: {
         unit: 'in',
         format: 'a3',
-        orientation: 'landscape',
+        orientation: 'landscape' as const,
       },
     };
 
@@ -361,12 +361,12 @@ xuatHoaDonXuat(hd: any) {
     const opt = {
       margin: 0.2,
       filename: `${hd.receipt_code}_xuat.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: 'jpeg' as const, quality: 0.98 },
       html2canvas: { scale: 1.2, useCORS: true },
       jsPDF: {
         unit: 'in',
         format: 'a3',
-        orientation: 'landscape',
+        orientation: 'landscape' as const,
       },
     };
 
