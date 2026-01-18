@@ -1,5 +1,5 @@
-CREATE DATABASE warehouse_db;
-USE warehouse_db;;
+-- CREATE DATABASE warehouse_db;
+-- USE warehouse_db;;
 
 -- Phần bảng cho tài khoản , thông tin tài khoản
 CREATE TABLE users (
@@ -251,43 +251,6 @@ ADD COLUMN manufacture_date DATE,                     -- Ngày sản xuất
 ADD COLUMN expiry_date DATE;                          -- Hạn sử dụng
 
 
-/*tự động gom mã thành 1*/
-DELIMITER $$
-
-CREATE TRIGGER after_products_detail_insert
-AFTER INSERT ON products_detail
-FOR EACH ROW
-BEGIN
-    INSERT INTO products (
-        product_code, product_name, product_type, unit, image_url,
-        total_quantity, total_weight, total_area
-    )
-    VALUES (
-        NEW.product_code,
-        NEW.product_name,
-        NEW.product_type,
-        NEW.unit,
-        NEW.image_url,
-        NEW.quantity,
-        NEW.weight,
-        NEW.area
-    )
-    ON DUPLICATE KEY UPDATE
-        product_name = VALUES(product_name),
-        product_type = VALUES(product_type),
-        unit = VALUES(unit),
-        image_url = VALUES(image_url),
-        total_quantity = total_quantity + VALUES(total_quantity),
-        total_weight = total_weight + VALUES(total_weight),
-        total_area = total_area + VALUES(total_area);
-END$$
-
-DELIMITER ;
-
-SELECT 
-    SUM(quantity * unit_price) AS tongGiaTriTonKho
-FROM products_detail;
-
 /*Bảng danh sách sản phẩm*/
 CREATE TABLE products_detail (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -334,6 +297,42 @@ CREATE TABLE products_detail (
   total_area DECIMAL(10,2) DEFAULT 0
 );
 
+/*tự động gom mã thành 1*/
+DELIMITER $$
+
+CREATE TRIGGER after_products_detail_insert
+AFTER INSERT ON products_detail
+FOR EACH ROW
+BEGIN
+    INSERT INTO products (
+        product_code, product_name, product_type, unit, image_url,
+        total_quantity, total_weight, total_area
+    )
+    VALUES (
+        NEW.product_code,
+        NEW.product_name,
+        NEW.product_type,
+        NEW.unit,
+        NEW.image_url,
+        NEW.quantity,
+        NEW.weight,
+        NEW.area
+    )
+    ON DUPLICATE KEY UPDATE
+        product_name = VALUES(product_name),
+        product_type = VALUES(product_type),
+        unit = VALUES(unit),
+        image_url = VALUES(image_url),
+        total_quantity = total_quantity + VALUES(total_quantity),
+        total_weight = total_weight + VALUES(total_weight),
+        total_area = total_area + VALUES(total_area);
+END$$
+
+DELIMITER ;
+
+SELECT 
+    SUM(quantity * unit_price) AS tongGiaTriTonKho
+FROM products_detail;
 
 /*Trigger tự động tính weight_per_unit, area_per_unit*/
 DELIMITER //
