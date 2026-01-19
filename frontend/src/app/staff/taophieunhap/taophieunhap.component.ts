@@ -27,7 +27,7 @@ export class TaophieunhapComponent implements OnInit {
   }
 
   loadPhieu() {
-    this.http.get<any[]>('${environment.apiUrl}/phieu-nhap').subscribe(data => {
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-nhap`).subscribe(data => {
       this.danhSachPhieu = data;
     });
   }

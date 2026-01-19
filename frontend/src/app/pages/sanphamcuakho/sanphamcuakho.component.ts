@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PhieuMuaService } from '../../services/phieu-mua.service'; // ✅ Import service
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sanphamcuakho',
@@ -54,13 +55,13 @@ export class SanphamcuakhoComponent implements OnInit {
       }
     });
 
-    this.http.get<any[]>('${environment.apiUrl}/products-detail/filter', { params })
+    this.http.get<any[]>(`${environment.apiUrl}/products-detail/filter`, { params })
       .subscribe(data => this.sanPhamList = data);
   }
 
   // 🟢 Gọi API lấy khu vực
   layKhuVuc() {
-    this.http.get<any[]>('${environment.apiUrl}/khu-vuc')
+    this.http.get<any[]>(`${environment.apiUrl}/khu-vuc`)
       .subscribe(data => this.danhSachKhuVuc = data);
   }
 
@@ -71,7 +72,7 @@ export class SanphamcuakhoComponent implements OnInit {
       params.khu_vuc_id = this.selectedKhuVuc;
     }
 
-    this.http.get<string[]>('${environment.apiUrl}/products-detail/types', { params })
+    this.http.get<string[]>(`${environment.apiUrl}/products-detail/types`, { params })
       .subscribe(data => {
         this.loaiHang = data;
         this.selectedType = ''; // reset loại hàng sau khi thay đổi khu

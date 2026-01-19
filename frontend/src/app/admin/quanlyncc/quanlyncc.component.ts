@@ -35,13 +35,13 @@ export class QuanlynccComponent {
   }
 
   loadKhuVuc() {
-    this.http.get<any>('${environment.apiUrl}/khu-vuc').subscribe(res => {
+    this.http.get<any>(`${environment.apiUrl}/khu-vuc`).subscribe(res => {
       this.danhSachKhuVuc = res;
     });
   }
 
   loadLogoMacDinh() {
-    this.http.get<any[]>('${environment.apiUrl}/suppliers/recent').subscribe(res => {
+    this.http.get<any[]>(`${environment.apiUrl}/suppliers/recent`).subscribe(res => {
       const uniqueSuppliers = this.getUniqueLatestSuppliers(res);
       this.logosGocTrongKhuVuc = [...uniqueSuppliers];
       this.logosTrongKhuVuc = [...uniqueSuppliers];

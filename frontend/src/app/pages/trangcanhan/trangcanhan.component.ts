@@ -92,7 +92,7 @@ submitInfo() {
     form.append('avatar', this.selectedFile);
   }
 
-  this.http.post('${environment.apiUrl}/user-info', form).subscribe(() => {
+  this.http.post(`${environment.apiUrl}/user-info`, form).subscribe(() => {
     alert('✅ Cập nhật thông tin thành công!');
     window.location.reload();
     this.showForm = false;

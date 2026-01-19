@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./lichsukiemke.component.css']
 })
 export class LichsukiemkeComponent implements OnInit {
-  private readonly BASE_URL = '${environment.apiUrl}';
+  private readonly BASE_URL = `${environment.apiUrl}`;
 
   danhSachDot: any[] = [];
   moChiTiet: { [dotId: number]: boolean } = {};

@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit {
     this.getTongGiaTriTonKho()
     this.loadFreePositions();
 
-    this.http.get<any[]>('${environment.apiUrl}/nha_cung_cap').subscribe(
+    this.http.get<any[]>(`${environment.apiUrl}/nha_cung_cap`).subscribe(
       data => {
         this.nhaCungCapList = data;
       },
@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.http.get<any[]>('${environment.apiUrl}/kiem_ke_lich_su')
+    this.http.get<any[]>(`${environment.apiUrl}/kiem_ke_lich_su`)
     .subscribe({
       next: (data) => this.lichSuKiemKe = data,
       error: (err) => console.error('Lỗi lấy lịch sử kiểm kê:', err)
@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getTongGiaTriTonKho() {
-  this.http.get<{ tongGiaTriTonKho: number }>('${environment.apiUrl}/tong_gia_tri_ton_kho')
+  this.http.get<{ tongGiaTriTonKho: number }>(`${environment.apiUrl}/tong_gia_tri_ton_kho`)
     .subscribe({
       next: res => {
         this.tongGiaTriTonKho = res.tongGiaTriTonKho ?? 0;
@@ -141,14 +141,14 @@ export class DashboardComponent implements OnInit {
   }
 
   loadPhieu() {
-    this.http.get<any[]>('${environment.apiUrl}/phieu-xuat').subscribe(data => {
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-xuat`).subscribe(data => {
       this.danhSachPhieuGoc = data;
       this.danhSachPhieu = [...data];
     });
   }
 
   laySoHoaDon() {
-    this.http.get<any>('${environment.apiUrl}/tong-phieu-nhap-xuat').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/tong-phieu-nhap-xuat`).subscribe({
       next: (res) => {
         this.tongPhieuNhap = res.tong_phieu_nhap;
         this.tongPhieuXuat = res.tong_phieu_xuat;
@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadSanPhamSapHet() {
-    this.http.get<any[]>('${environment.apiUrl}/products-detail/sap-het').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/products-detail/sap-het`).subscribe({
       next: (data) => {
         this.sapHetList = data;
       },
@@ -224,7 +224,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadSucChuaKho() {
-    this.http.get<{ totalUsedPercent: number, data: KhuVuc[] }>('${environment.apiUrl}/khu_vuc_suc_chua').subscribe({
+    this.http.get<{ totalUsedPercent: number, data: KhuVuc[] }>(`${environment.apiUrl}/khu_vuc_suc_chua`).subscribe({
       next: (res) => {
         if (!res || !res.data || res.data.length === 0) {
           this.totalUsedPercent = 0;
@@ -346,7 +346,7 @@ export class DashboardComponent implements OnInit {
       tongNhap: number,
       tongXuat: number,
       doanhThu: number
-    }>('${environment.apiUrl}/doanh_thu').subscribe({
+    }>(`${environment.apiUrl}/doanh_thu`).subscribe({
       next: res => {
         console.log('Dữ liệu doanh thu từ API (raw):', res);
 
@@ -511,10 +511,10 @@ renderDoanhThuChart() {
   
   loadStatistics() {
     Promise.all([
-      this.http.get<{ tong_phieu_nhap: number; tong_phieu_xuat: number }>('${environment.apiUrl}/tong-phieu-nhap-xuat').toPromise(),
-      this.http.get<any[]>('${environment.apiUrl}/products-detail/sap-het').toPromise(),
-      this.http.get<any>('${environment.apiUrl}/doanh_thu').toPromise(),
-      this.http.get<any>('${environment.apiUrl}/khu_vuc_suc_chua').toPromise(),
+      this.http.get<{ tong_phieu_nhap: number; tong_phieu_xuat: number }>(`${environment.apiUrl}/tong-phieu-nhap-xuat`).toPromise(),
+      this.http.get<any[]>(`${environment.apiUrl}/products-detail/sap-het`).toPromise(),
+      this.http.get<any>(`${environment.apiUrl}/doanh_thu`).toPromise(),
+      this.http.get<any>(`${environment.apiUrl}/khu_vuc_suc_chua`).toPromise(),
     ]).then(([phieu, sapHet, doanhThu, sucChua]) => {
       this.stats = {
         tongPhieuNhap: phieu?.tong_phieu_nhap ?? 0,
@@ -532,7 +532,7 @@ renderDoanhThuChart() {
 
   getAISummary() {
     this.loading = true;
-    this.http.post<{ summary: string }>('${environment.apiUrl}/ai-summary', this.stats)
+    this.http.post<{ summary: string }>(`${environment.apiUrl}/ai-summary`, this.stats)
       .subscribe({
         next: res => {
           this.aiSummary = res.summary;
@@ -547,7 +547,7 @@ renderDoanhThuChart() {
   }
 
   loadFreePositions() {
-    this.http.get<{ totalFreePositions: number }>('${environment.apiUrl}/vi-tri-con-trong').subscribe({
+    this.http.get<{ totalFreePositions: number }>(`${environment.apiUrl}/vi-tri-con-trong`).subscribe({
       next: (res) => {
         this.totalFreePositions = res.totalFreePositions ?? 0;
       },

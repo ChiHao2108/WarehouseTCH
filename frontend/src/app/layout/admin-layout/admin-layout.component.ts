@@ -49,13 +49,13 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   getSoPhieuNhapChoDuyet() {
-    this.http.get<any[]>('${environment.apiUrl}/phieu-nhap').subscribe(ds => {
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-nhap`).subscribe(ds => {
       this.soPhieuNhapChoDuyet = ds.filter(p => p.trang_thai === 'Đã gửi phiếu').length;
     });
   }
 
   getSoPhieuXuatChoDuyet() {
-    this.http.get<any[]>('${environment.apiUrl}/phieu-xuat').subscribe(ds => {
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-xuat`).subscribe(ds => {
       this.soPhieuXuatChoDuyet = ds.filter(p => p.trang_thai === 'Đã gửi phiếu').length;
     });
   }

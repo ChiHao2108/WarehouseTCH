@@ -214,7 +214,7 @@ capNhatPhieuNhap(hd: any) {
       const formData = new FormData();
       formData.append('image', file); // phải khớp với multer single('image')
 
-      this.http.post<any>('${environment.apiUrl}/upload', formData).subscribe({
+      this.http.post<any>(`${environment.apiUrl}/upload`, formData).subscribe({
         next: (res) => {
           this.previewLogo = res.imageUrl; // ← Dùng để hiển thị
           this.phieuDangCapNhat.logo_url = res.imageUrl; // ← Gán URL ảnh trả về

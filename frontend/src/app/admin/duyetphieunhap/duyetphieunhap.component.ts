@@ -65,7 +65,7 @@ export class DuyetphieunhapComponent implements OnInit {
   }
 
   loadPhieu() {
-    this.http.get<any[]>('${environment.apiUrl}/phieu-nhap').subscribe(data => {
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-nhap`).subscribe(data => {
       this.danhSachPhieuGoc = data;
       this.locPhieu(); // Gọi hàm lọc ngay sau khi load
     });
@@ -185,7 +185,7 @@ export class DuyetphieunhapComponent implements OnInit {
       });
 
     // Lấy danh sách khu vực kho
-    this.http.get<any[]>('${environment.apiUrl}/khu-vuc')
+    this.http.get<any[]>(`${environment.apiUrl}/khu-vuc`)
       .subscribe(data => {
         this.danhSachKhuVuc = data;
       }, err => {
@@ -219,7 +219,7 @@ export class DuyetphieunhapComponent implements OnInit {
 
     const maSanPham = this.danhSachSanPhamNhap.map(sp => sp.product_code);
 
-    this.http.post<any>('${environment.apiUrl}/products-detail/check-multiple', {
+    this.http.post<any>(`${environment.apiUrl}/products-detail/check-multiple`, {
       ma_san_pham: maSanPham
     }).subscribe(result => {
       const maTrung = [...new Set(result.duplicates as string[] || [])];
@@ -296,7 +296,7 @@ export class DuyetphieunhapComponent implements OnInit {
       }
 
       // 📨 Gửi API nhập kho
-      this.http.post('${environment.apiUrl}/nhap-kho', {
+      this.http.post(`${environment.apiUrl}/nhap-kho`, {
         phieu_id: this.selectedPhieu.id,
         danh_sach_san_pham: danhSachOK
       }).subscribe(() => {
@@ -328,7 +328,7 @@ export class DuyetphieunhapComponent implements OnInit {
       const formData = new FormData();
       formData.append('image', file);
 
-      this.http.post<any>('${environment.apiUrl}/upload', formData).subscribe(res => {
+      this.http.post<any>(`${environment.apiUrl}/upload`, formData).subscribe(res => {
         sp.image_url = res.imageUrl; // Lưu đường dẫn ảnh mới
       });
     }

@@ -81,7 +81,7 @@ export class QuanlysanphamComponent implements OnInit {
     if (this.selectedKhuVuc) {
       params.khu_vuc_id = this.selectedKhuVuc;
     }
-    this.http.get<string[]>('${environment.apiUrl}/products-detail/types', { params }).subscribe({
+    this.http.get<string[]>(`${environment.apiUrl}/products-detail/types`, { params }).subscribe({
       next: (data) => {
         this.loaiHang = data;
         this.selectedType = '';
@@ -103,21 +103,21 @@ export class QuanlysanphamComponent implements OnInit {
     if (this.minPrice !== null) params.minPrice = this.minPrice;
     if (this.maxPrice !== null) params.maxPrice = this.maxPrice;
 
-    this.http.get<any[]>('${environment.apiUrl}/products-detail/filter', { params }).subscribe(
+    this.http.get<any[]>(`${environment.apiUrl}/products-detail/filter`, { params }).subscribe(
       (data) => this.danhSachSanPham = data,
       (err) => console.error('❌ Lỗi lọc sản phẩm:', err)
     );
   }
 
   layKhuVuc() {
-    this.http.get<any[]>('${environment.apiUrl}/khu-vuc').subscribe(
+    this.http.get<any[]>(`${environment.apiUrl}/khu-vuc`).subscribe(
       (data) => this.danhSachKhuVuc = data,
       (err) => console.error('❌ Lỗi khi lấy khu vực:', err)
     );
   }
 
   layLoaiHangTuDB() {
-    this.http.get<string[]>('${environment.apiUrl}/products-detail/types').subscribe({
+    this.http.get<string[]>(`${environment.apiUrl}/products-detail/types`).subscribe({
       next: (data) => this.loaiHang = data,
       error: (err) => console.error('❌ Lỗi lấy loại hàng:', err)
     });
@@ -200,7 +200,7 @@ export class QuanlysanphamComponent implements OnInit {
     });
     if (this.fileAnh) formData.append('image', this.fileAnh);
     if (this.fileLogo) formData.append('logo', this.fileLogo);
-    this.http.post('${environment.apiUrl}/products-detail', formData).subscribe({
+    this.http.post(`${environment.apiUrl}/products-detail`, formData).subscribe({
       next: () => {
         alert('✅ Nhập thành công!');
         this.hienPopupThem = false;

@@ -47,7 +47,7 @@ export class DuyetphieuxuatComponent implements OnInit {
   }
 
   loadPhieu() {
-    this.http.get<any[]>('${environment.apiUrl}/phieu-xuat').subscribe(data => {
+    this.http.get<any[]>(`${environment.apiUrl}/phieu-xuat`).subscribe(data => {
       this.danhSachPhieuGoc = data;
       this.danhSachPhieu = [...data];
     });
@@ -256,7 +256,7 @@ export class DuyetphieuxuatComponent implements OnInit {
       });
 
     // Lấy danh sách khu vực kho
-    this.http.get<any[]>('${environment.apiUrl}/khu-vuc')
+    this.http.get<any[]>(`${environment.apiUrl}/khu-vuc`)
       .subscribe(data => {
         this.danhSachKhuVuc = data;
       }, err => {
@@ -290,7 +290,7 @@ export class DuyetphieuxuatComponent implements OnInit {
       const formData = new FormData();
       formData.append('image', file);
 
-      this.http.post<any>('${environment.apiUrl}/upload', formData).subscribe(res => {
+      this.http.post<any>(`${environment.apiUrl}/upload`, formData).subscribe(res => {
         sp.image_url = res.imageUrl; // Lưu đường dẫn ảnh mới
       });
     }

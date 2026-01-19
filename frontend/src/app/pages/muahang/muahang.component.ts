@@ -243,7 +243,7 @@ export class MuahangComponent {
     form.append('products', JSON.stringify(this.formData.products));
 
     // --- Gửi API ---
-    this.http.post<any>('${environment.apiUrl}/phieu-xuat', form).subscribe({
+    this.http.post<any>(`${environment.apiUrl}/phieu-xuat`, form).subscribe({
       next: (res) => {
         this.generatedReceiptCode = res.receipt_code;
         alert(`✅ Gửi phiếu xuất thành công!\n📄 Mã phiếu: ${res.receipt_code}`);

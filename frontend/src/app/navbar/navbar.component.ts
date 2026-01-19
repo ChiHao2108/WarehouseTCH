@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
       });
 
       // ✅ Gọi API kiểm kê chưa làm
-      this.http.get<{ count: number }>('${environment.apiUrl}/kiem-ke/chua-kiem')
+      this.http.get<{ count: number }>(`${environment.apiUrl}/kiem-ke/chua-kiem`)
         .subscribe({
           next: res => this.canhBaoKiemKe = res.count > 0,
           error: err => console.warn('❌ Lỗi kiểm tra kiểm kê:', err)

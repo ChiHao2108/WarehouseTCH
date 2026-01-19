@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<any[]>('${environment.apiUrl}/products-detail/filter')
+    this.http.get<any[]>(`${environment.apiUrl}/products-detail/filter`)
       .subscribe({
         next: (data) => {
           this.sanPhamList = data;

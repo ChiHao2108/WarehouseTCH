@@ -203,7 +203,7 @@ export class GuihangComponent {
     });
     form.append('products', JSON.stringify(this.formData.products));
 
-    this.http.post('${environment.apiUrl}/phieu-nhap', form).subscribe({
+    this.http.post(`${environment.apiUrl}/phieu-nhap`, form).subscribe({
       next: (res: any) => {
         this.generatedReceiptCode = res.receipt_code;
         alert(`✅ Gửi phiếu chuyển hàng thành công!\n📄 Mã phiếu: ${res.receipt_code}`);

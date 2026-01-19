@@ -65,7 +65,7 @@ export class LocationManagerComponent implements OnInit {
   }
 
   fetchOverviewAndAreas() {
-    this.http.get<any>('${environment.apiUrl}/kho/overview').subscribe({
+    this.http.get<any>(`${environment.apiUrl}/kho/overview`).subscribe({
       next: res => {
         // Gán thống kê kho
         this.totalWeight = res.overview.tong_suc_chua_kg;
@@ -211,7 +211,7 @@ xacNhanChuyen() {
   const toPallet = this.selectedDestinationPallet.name;
 
   // Gửi yêu cầu chuyển hàng
-  this.http.post('${environment.apiUrl}/kho/chuyen-pallet', {
+  this.http.post(`${environment.apiUrl}/kho/chuyen-pallet`, {
     products: productsToMove,
     from: fromPallet,
     to: toPallet,

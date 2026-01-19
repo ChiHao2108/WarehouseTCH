@@ -56,7 +56,7 @@ export class AccountManagerComponent implements OnInit {
   }
 
   loadUsers() {
-    this.http.get<any[]>('${environment.apiUrl}/users').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/users`).subscribe({
     next: data => {
       this.users = data;
       this.filteredUsers = data; // ban đầu hiển thị tất cả
@@ -109,7 +109,7 @@ export class AccountManagerComponent implements OnInit {
       return;
     }
 
-    this.http.post('${environment.apiUrl}/users', this.newUser).subscribe({
+    this.http.post(`${environment.apiUrl}/users`, this.newUser).subscribe({
       next: (res: any) => {
         alert('✅ Đã thêm tài khoản!');
         this.users.push(res.user);
@@ -135,7 +135,7 @@ export class AccountManagerComponent implements OnInit {
       return;
     }
 
-    this.http.post('${environment.apiUrl}/users', { name, email, password, role })
+    this.http.post(`${environment.apiUrl}/users`, { name, email, password, role })
       .subscribe({
         next: (res: any) => {
           alert('✅ Đã thêm tài khoản!');
@@ -242,7 +242,7 @@ export class AccountManagerComponent implements OnInit {
         form.append('avatar', this.selectedFile);
       }
 
-      this.http.post('${environment.apiUrl}/user-info', form).subscribe(() => {
+      this.http.post(`${environment.apiUrl}/user-info`, form).subscribe(() => {
         alert('✅ Cập nhật thông tin thành công!');
         window.location.reload();
         this.showUserInfoForm = false;

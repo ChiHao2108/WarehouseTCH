@@ -53,7 +53,7 @@ export class KiemkehanghoaComponent implements OnInit {
           this.layTenDot();
         }
       } else {
-        this.http.get<any>('${environment.apiUrl}/kiem-ke/dot-dang-kiem')
+        this.http.get<any>(`${environment.apiUrl}/kiem-ke/dot-dang-kiem`)
           .subscribe({
             next: (response) => {
               if (response.success && response.data) { // ✅ FIX
@@ -78,7 +78,7 @@ export class KiemkehanghoaComponent implements OnInit {
   }
 
   layTenDot() {
-    this.http.get<any>('${environment.apiUrl}/kiem-ke/dot-dang-kiem')
+    this.http.get<any>(`${environment.apiUrl}/kiem-ke/dot-dang-kiem`)
       .subscribe({
         next: (response) => {
           if (response.success && response.data) { // ✅ FIX
@@ -152,7 +152,7 @@ export class KiemkehanghoaComponent implements OnInit {
       return alert('⚠️ Vui lòng nhập số lượng thực tế!');
     }
 
-    this.http.post<any>('${environment.apiUrl}/kiem-ke/cap-nhat-chi-tiet', {
+    this.http.post<any>(`${environment.apiUrl}/kiem-ke/cap-nhat-chi-tiet`, {
       kiem_ke_chi_tiet_id: sp.kiem_ke_chi_tiet_id,
       actual_quantity: sp.actual_quantity,
       ghi_chu: sp.ghi_chu || '',
@@ -191,7 +191,7 @@ export class KiemkehanghoaComponent implements OnInit {
     }
 
     const requests = dataToSubmit.map(item =>
-      this.http.post<any>('${environment.apiUrl}/kiem-ke/cap-nhat-chi-tiet', {
+      this.http.post<any>(`${environment.apiUrl}/kiem-ke/cap-nhat-chi-tiet`, {
         kiem_ke_chi_tiet_id: item.kiem_ke_chi_tiet_id,
         actual_quantity: item.actual_quantity,
         ghi_chu: item.ghi_chu,

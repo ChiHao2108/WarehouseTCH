@@ -147,7 +147,7 @@ export class QuanlyhangtonComponent implements OnInit {
   }
 
   loadProducts() {
-    this.http.get<any[]>('${environment.apiUrl}/products-detail/with-deducted')
+    this.http.get<any[]>(`${environment.apiUrl}/products-detail/with-deducted`)
       .subscribe(data => {
         const sorted = [...data].sort((a, b) => b.id - a.id);
 
@@ -442,7 +442,7 @@ export class QuanlyhangtonComponent implements OnInit {
       return alert('❌ Thiếu tên đợt kiểm kê hoặc email người tạo.');
     }
 
-    this.http.post<any>('${environment.apiUrl}/kiem-ke/tao-dot', {
+    this.http.post<any>(`${environment.apiUrl}/kiem-ke/tao-dot`, {
       ten_dot: this.newBatchName,
       created_by_email: email
     }).subscribe({
@@ -467,7 +467,7 @@ export class QuanlyhangtonComponent implements OnInit {
           .map(sp => sp.product_code);
 
         // ✅ Gán sản phẩm vào đợt kiểm kê
-        this.http.post<any>('${environment.apiUrl}/kiem-ke/gan-san-pham-vao-dot', {
+        this.http.post<any>(`${environment.apiUrl}/kiem-ke/gan-san-pham-vao-dot`, {
           dot_id: res.dotId,
           product_codes: selectedCodes
         }).subscribe({
@@ -525,7 +525,7 @@ export class QuanlyhangtonComponent implements OnInit {
       return;
     }
 
-    this.http.post<any>('${environment.apiUrl}/kiem-ke/gan-san-pham-vao-dot', {
+    this.http.post<any>(`${environment.apiUrl}/kiem-ke/gan-san-pham-vao-dot`, {
       dot_id: this.currentInventoryBatchId,
       product_codes: maMoi
     }).subscribe({
@@ -597,7 +597,7 @@ export class QuanlyhangtonComponent implements OnInit {
     }
 
     // 👉 Ngược lại: sản phẩm đã thuộc về 1 đợt kiểm kê → gọi API để xoá khỏi DB
-    this.http.post('${environment.apiUrl}/kiem-ke/xoa-san-pham-khoi-dot', {
+    this.http.post(`${environment.apiUrl}/kiem-ke/xoa-san-pham-khoi-dot`, {
       product_code: sp.product_code,
       dot_id: this.currentInventoryBatchId
     }).subscribe({
@@ -635,7 +635,7 @@ export class QuanlyhangtonComponent implements OnInit {
     const confirmReset = confirm(`Bạn có chắc chắn muốn đếm lại sản phẩm "${sp.product_name}"?\nViệc này sẽ xóa số lượng thực tế và người kiểm trên cả Admin và Nhân viên.`);
     if (!confirmReset) return;
 
-    this.http.post('${environment.apiUrl}/kiem-ke/reset-san-pham', {
+    this.http.post(`${environment.apiUrl}/kiem-ke/reset-san-pham`, {
       product_code: sp.product_code,
       dot_id: this.currentInventoryBatchId
     }).subscribe({
@@ -731,7 +731,7 @@ export class QuanlyhangtonComponent implements OnInit {
 
     if (productCodesCu.length > 0) {
       // Xoá các sản phẩm đã có trong DB
-      this.http.post('${environment.apiUrl}/kiem-ke/xoa-nhieu-san-pham', {
+      this.http.post(`${environment.apiUrl}/kiem-ke/xoa-nhieu-san-pham`, {
         dot_id: Number(this.currentInventoryBatchId),
         product_codes: productCodesCu
       }).subscribe({
