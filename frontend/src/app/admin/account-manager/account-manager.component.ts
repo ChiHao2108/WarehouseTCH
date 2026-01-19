@@ -129,27 +129,21 @@ export class AccountManagerComponent implements OnInit {
       return;
     }
 
-    const namePattern = /^[A-Za-zÀ-ỹ\s]{2,50}$/;
-    if (!namePattern.test(name.trim())) {
-      alert('⚠️ Họ tên phải là chữ cái, không chứa số/ký tự đặc biệt và ít nhất 2 ký tự!');
-      return;
-    }
-
     this.http.post(`${environment.apiUrl}/users`, { name, email, password, role })
       .subscribe({
         next: (res: any) => {
           alert('✅ Đã thêm tài khoản!');
-          this.users.push(res.user); // Cập nhật danh sách
-          this.showAccountForm = false; // Đóng form
-          this.newUser = { name: '', email: '', password: '', role: 'user' }; // Reset form
+          this.users.unshift(res.user); // thêm lên đầu cho dễ thấy
+          this.showAccountForm = false;
+          this.newUser = { name: '', email: '', password: '', role: 'user' };
         },
         error: (err) => {
-        console.error('❌ Lỗi khi thêm tài khoản:', err);
-        alert(err.error?.message || '❌ Lỗi khi thêm tài khoản.');
-      }
-    });
-    window.location.reload();
+          console.error('❌ Lỗi khi thêm tài khoản:', err);
+          alert(err.error?.message || '❌ Lỗi khi thêm tài khoản.');
+        }
+      });
   }
+
 
   xemThongTin(user: any) {
     // Gọi API để lấy thông tin chi tiết từ bảng user_info (liên kết với users qua user_id)
