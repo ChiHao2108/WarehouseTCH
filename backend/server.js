@@ -202,7 +202,7 @@ app.get('/api/users', (req, res) => {
 
 
 
-// ✅ Thêm tài khoản (Admin)
+// ✅ Thêm tài khoản (Admin) – status mặc định ACTIVE
 app.post('/api/users', async (req, res) => {
   const { name, email, password, role } = req.body;
   if (!name || !email || !password || !role)
@@ -210,16 +210,36 @@ app.post('/api/users', async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
-    db.query(sql, [name, email, hashedPassword, role], (err, result) => {
-      if (err) {
-        if (err.code === 'ER_DUP_ENTRY')
-          return res.status(409).json({ message: 'Email đã tồn tại!' });
-        return res.status(500).json({ message: 'Lỗi khi thêm tài khoản.' });
+
+    const sql = `
+      INSERT INTO users (name, email, password, role, status)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      sql,
+      [name, email, hashedPassword, role, 'active'],
+      (err, result) => {
+        if (err) {
+          if (err.code === 'ER_DUP_ENTRY')
+            return res.status(409).json({ message: 'Email đã tồn tại!' });
+          return res.status(500).json({ message: 'Lỗi khi thêm tài khoản.' });
+        }
+
+        const newUser = {
+          id: result.insertId,
+          name,
+          email,
+          role,
+          status: 'active'
+        };
+
+        res.status(201).json({
+          message: 'Tạo tài khoản thành công!',
+          user: newUser
+        });
       }
-      const newUser = { id: result.insertId, name, email, role };
-      res.status(201).json({ message: 'Tạo tài khoản thành công!', user: newUser });
-    });
+    );
   } catch (error) {
     res.status(500).json({ message: 'Lỗi máy chủ.' });
   }
